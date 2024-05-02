@@ -1,9 +1,23 @@
 package neatlogic.module.event.stephandler.component;
 
-import java.util.List;
-import java.util.Set;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Objects;
+import neatlogic.framework.crossover.CrossoverServiceFactory;
+import neatlogic.framework.event.constvalue.EventAuditDetailType;
 import neatlogic.framework.event.constvalue.EventProcessStepHandlerType;
+import neatlogic.framework.event.dto.EventVo;
+import neatlogic.framework.event.dto.ProcessTaskStepEventVo;
+import neatlogic.framework.event.exception.core.EventNotFoundException;
+import neatlogic.framework.process.constvalue.ProcessStepMode;
+import neatlogic.framework.process.constvalue.ProcessTaskAuditDetailType;
+import neatlogic.framework.process.constvalue.ProcessTaskAuditType;
+import neatlogic.framework.process.crossover.IProcessStepHandlerCrossoverUtil;
+import neatlogic.framework.process.dto.ProcessTaskStepVo;
+import neatlogic.framework.process.dto.ProcessTaskStepWorkerVo;
+import neatlogic.framework.process.exception.processtask.ProcessTaskException;
+import neatlogic.framework.process.stephandler.core.ProcessStepHandlerBase;
+import neatlogic.module.event.dao.mapper.EventMapper;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,22 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.base.Objects;
-
-import neatlogic.framework.process.constvalue.ProcessStepMode;
-import neatlogic.framework.process.constvalue.ProcessTaskAuditDetailType;
-import neatlogic.framework.process.constvalue.ProcessTaskAuditType;
-import neatlogic.framework.process.dto.ProcessTaskStepVo;
-import neatlogic.framework.process.dto.ProcessTaskStepWorkerVo;
-import neatlogic.framework.process.exception.processtask.ProcessTaskException;
-import neatlogic.framework.process.stephandler.core.ProcessStepHandlerBase;
-import neatlogic.framework.event.constvalue.EventAuditDetailType;
-import neatlogic.module.event.dao.mapper.EventMapper;
-import neatlogic.framework.event.dto.EventVo;
-import neatlogic.framework.event.dto.ProcessTaskStepEventVo;
-import neatlogic.framework.event.exception.core.EventNotFoundException;
+import java.util.List;
+import java.util.Set;
 @Service
 public class EventProcessComponent extends ProcessStepHandlerBase {
 
@@ -148,7 +148,8 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
         if (MapUtils.isNotEmpty(handlerStepInfoObj)) {
             currentProcessTaskStepVo.getParamObj().put(EventAuditDetailType.EVENTINFO.getParamName(), JSON.toJSONString(handlerStepInfoObj));
         }
-        IProcessStepHandlerUtil.audit(currentProcessTaskStepVo, ProcessTaskAuditType.getProcessTaskAuditType(action));
+        IProcessStepHandlerCrossoverUtil processStepHandlerCrossoverUtil = CrossoverServiceFactory.getApi(IProcessStepHandlerCrossoverUtil.class);
+        processStepHandlerCrossoverUtil.audit(currentProcessTaskStepVo, ProcessTaskAuditType.getProcessTaskAuditType(action));
         return 1;
     }
 
