@@ -1,32 +1,37 @@
 package neatlogic.module.event.stephandler.utilhandler;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import neatlogic.framework.crossover.CrossoverServiceFactory;
-import neatlogic.framework.notify.crossover.INotifyServiceCrossoverService;
-import neatlogic.framework.process.constvalue.ProcessTaskOperationType;
-import neatlogic.framework.process.dto.*;
-import neatlogic.framework.process.dto.processconfig.ActionConfigActionVo;
-import neatlogic.framework.process.dto.processconfig.ActionConfigVo;
-import neatlogic.framework.notify.dto.InvokeNotifyPolicyConfigVo;
-import neatlogic.framework.process.stephandler.core.ProcessStepInternalHandlerBase;
-import neatlogic.framework.process.util.ProcessConfigUtil;
 import neatlogic.framework.event.constvalue.EventProcessStepHandlerType;
-import neatlogic.module.event.dao.mapper.EventMapper;
-import neatlogic.module.event.dao.mapper.EventSolutionMapper;
-import neatlogic.module.event.dao.mapper.EventTypeMapper;
 import neatlogic.framework.event.dto.EventSolutionVo;
 import neatlogic.framework.event.dto.EventTypeVo;
 import neatlogic.framework.event.dto.EventVo;
 import neatlogic.framework.event.exception.core.EventNotFoundException;
+import neatlogic.framework.notify.crossover.INotifyServiceCrossoverService;
+import neatlogic.framework.notify.dto.InvokeNotifyPolicyConfigVo;
+import neatlogic.framework.process.constvalue.ProcessTaskOperationType;
+import neatlogic.framework.process.dto.ProcessStepTaskConfigVo;
+import neatlogic.framework.process.dto.ProcessStepVo;
+import neatlogic.framework.process.dto.ProcessStepWorkerPolicyVo;
+import neatlogic.framework.process.dto.ProcessTaskStepVo;
+import neatlogic.framework.process.dto.processconfig.ActionConfigActionVo;
+import neatlogic.framework.process.dto.processconfig.ActionConfigVo;
+import neatlogic.framework.process.stephandler.core.ProcessStepInternalHandlerBase;
+import neatlogic.framework.process.util.ProcessConfigUtil;
+import neatlogic.module.event.dao.mapper.EventMapper;
+import neatlogic.module.event.dao.mapper.EventSolutionMapper;
+import neatlogic.module.event.dao.mapper.EventTypeMapper;
 import neatlogic.module.event.notify.handler.EventNotifyPolicyHandler;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,12 +50,12 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
     }
 
     @Override
-    public Object getHandlerStepInfo(ProcessTaskStepVo currentProcessTaskStepVo) {
-        return getHandlerStepInitInfo(currentProcessTaskStepVo);
+    public Object getStartStepInfo(ProcessTaskStepVo currentProcessTaskStepVo) {
+        return getNonStartStepInfo(currentProcessTaskStepVo);
     }
 
     @Override
-    public Object getHandlerStepInitInfo(ProcessTaskStepVo currentProcessTaskStepVo) {
+    public Object getNonStartStepInfo(ProcessTaskStepVo currentProcessTaskStepVo) {
         Long eventId = eventMapper.getEventIdByProcessTaskStepId(currentProcessTaskStepVo.getId());
         if (eventId != null) {
             EventVo eventVo = eventMapper.getEventById(eventId);
