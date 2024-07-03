@@ -22,23 +22,24 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
+
 @Service
 public class EventProcessComponent extends ProcessStepHandlerBase {
 
-    private Logger logger = LoggerFactory.getLogger(EventProcessComponent.class);
-    @Autowired
+    private final Logger logger = LoggerFactory.getLogger(EventProcessComponent.class);
+    @Resource
     private EventMapper eventMapper;
-    
+
     @Override
     public String getHandler() {
         return EventProcessStepHandlerType.EVENT.getHandler();
     }
-    
+
     @SuppressWarnings("serial")
     @Override
     public JSONObject getChartConfig() {
@@ -89,7 +90,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     protected int myAssign(ProcessTaskStepVo currentProcessTaskStepVo, Set<ProcessTaskStepWorkerVo> workerSet)
-        throws ProcessTaskException {
+            throws ProcessTaskException {
         return defaultAssign(currentProcessTaskStepVo, workerSet);
     }
 
@@ -139,7 +140,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     protected int myCompleteAudit(ProcessTaskStepVo currentProcessTaskStepVo) {
-        if(StringUtils.isNotBlank(currentProcessTaskStepVo.getError())) {
+        if (StringUtils.isNotBlank(currentProcessTaskStepVo.getError())) {
             currentProcessTaskStepVo.getParamObj().put(ProcessTaskAuditDetailType.CAUSE.getParamName(), currentProcessTaskStepVo.getError());
         }
         /** 处理历史记录 **/
@@ -180,7 +181,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     protected int myTransfer(ProcessTaskStepVo currentProcessTaskStepVo, List<ProcessTaskStepWorkerVo> workerList)
-        throws ProcessTaskException {
+            throws ProcessTaskException {
         return 0;
     }
 
