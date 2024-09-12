@@ -134,7 +134,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
             return 1;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new ProcessTaskException(e.getMessage());
+            throw new ProcessTaskException(e);
         }
     }
 
