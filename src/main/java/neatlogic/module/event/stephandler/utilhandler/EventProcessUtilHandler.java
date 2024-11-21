@@ -10,7 +10,9 @@ import neatlogic.framework.event.dto.EventVo;
 import neatlogic.framework.event.exception.core.EventNotFoundException;
 import neatlogic.framework.notify.crossover.INotifyServiceCrossoverService;
 import neatlogic.framework.notify.dto.InvokeNotifyPolicyConfigVo;
+import neatlogic.framework.process.constvalue.IOperationType;
 import neatlogic.framework.process.constvalue.ProcessTaskOperationType;
+import neatlogic.framework.process.constvalue.ProcessTaskStepOperationType;
 import neatlogic.framework.process.dto.ProcessStepTaskConfigVo;
 import neatlogic.framework.process.dto.ProcessStepVo;
 import neatlogic.framework.process.dto.ProcessStepWorkerPolicyVo;
@@ -159,23 +161,23 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         JSONObject resultObj = new JSONObject();
 
         /** 授权 **/
-        ProcessTaskOperationType[] stepActions = {
-                ProcessTaskOperationType.STEP_VIEW,
-                ProcessTaskOperationType.STEP_TRANSFER,
-                ProcessTaskOperationType.STEP_PAUSE,
-                ProcessTaskOperationType.STEP_RETREAT
+        IOperationType[] stepActions = {
+                ProcessTaskStepOperationType.STEP_VIEW,
+                ProcessTaskStepOperationType.STEP_TRANSFER,
+                ProcessTaskStepOperationType.STEP_PAUSE,
+                ProcessTaskStepOperationType.STEP_RETREAT
         };
         JSONArray authorityList = configObj.getJSONArray("authorityList");
         JSONArray authorityArray = ProcessConfigUtil.regulateAuthorityList(authorityList, stepActions);
         resultObj.put("authorityList", authorityArray);
 
         /** 按钮映射列表 **/
-        ProcessTaskOperationType[] stepButtons = {
-                ProcessTaskOperationType.STEP_COMPLETE,
-                ProcessTaskOperationType.STEP_BACK,
-                ProcessTaskOperationType.STEP_COMMENT,
+        IOperationType[] stepButtons = {
+                ProcessTaskStepOperationType.STEP_COMPLETE,
+                ProcessTaskStepOperationType.STEP_BACK,
+                ProcessTaskStepOperationType.STEP_COMMENT,
                 ProcessTaskOperationType.PROCESSTASK_TRANSFER,
-                ProcessTaskOperationType.STEP_ACCEPT,
+                ProcessTaskStepOperationType.STEP_ACCEPT,
                 ProcessTaskOperationType.PROCESSTASK_ABORT,
                 ProcessTaskOperationType.PROCESSTASK_RECOVER
         };
@@ -206,11 +208,11 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         JSONObject resultObj = new JSONObject();
 
         /** 授权 **/
-        ProcessTaskOperationType[] stepActions = {
-                ProcessTaskOperationType.STEP_VIEW,
-                ProcessTaskOperationType.STEP_TRANSFER,
-                ProcessTaskOperationType.STEP_PAUSE,
-                ProcessTaskOperationType.STEP_RETREAT
+        IOperationType[] stepActions = {
+                ProcessTaskStepOperationType.STEP_VIEW,
+                ProcessTaskStepOperationType.STEP_TRANSFER,
+                ProcessTaskStepOperationType.STEP_PAUSE,
+                ProcessTaskStepOperationType.STEP_RETREAT
         };
         JSONArray authorityList = null;
         Integer enableAuthority = configObj.getInteger("enableAuthority");
@@ -240,15 +242,15 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
 
         JSONArray customButtonList = configObj.getJSONArray("customButtonList");
         /** 按钮映射列表 **/
-        ProcessTaskOperationType[] stepButtons = {
-                ProcessTaskOperationType.STEP_COMPLETE,
-                ProcessTaskOperationType.STEP_BACK,
-                ProcessTaskOperationType.STEP_COMMENT,
+        IOperationType[] stepButtons = {
+                ProcessTaskStepOperationType.STEP_COMPLETE,
+                ProcessTaskStepOperationType.STEP_BACK,
+                ProcessTaskStepOperationType.STEP_COMMENT,
                 ProcessTaskOperationType.PROCESSTASK_TRANSFER,
-                ProcessTaskOperationType.STEP_ACCEPT,
+                ProcessTaskStepOperationType.STEP_ACCEPT,
                 ProcessTaskOperationType.PROCESSTASK_ABORT,
                 ProcessTaskOperationType.PROCESSTASK_RECOVER,
-                ProcessTaskOperationType.STEP_REAPPROVAL
+                ProcessTaskStepOperationType.STEP_REAPPROVAL
         };
 
         JSONArray customButtonArray = ProcessConfigUtil.regulateCustomButtonList(customButtonList, stepButtons);
